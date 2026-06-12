@@ -1,140 +1,155 @@
-# ESP32-P4 M5Tab SSH 客户端使用指南
+# M5Stack Tab5 AIO Box Quick Start Guide
 
-本指南只保留日常使用需要知道的内容。重点看第 4 节：进入终端后的实体键盘、软键盘和拼音输入法。
+[English](QUICK_START_GUIDE.md) | [简体中文](QUICK_START_GUIDE_zh-CN.md) | [繁體中文](QUICK_START_GUIDE_zh-TW.md)
 
-## 主要特性
+This guide covers the everyday workflows for the English UI: first boot, SSH connection, WiFi, file management, OTA upgrade, screenshots, backup, and basic maintenance.
 
-1. **SSH 终端客户端**：面向 M5Stack Tab5 的触摸屏 SSH 客户端，支持保存多个服务器，短按即可快速连接。
-2. **多会话保持**：服务器列表会保留会话配置，断开后可以回到主界面继续切换或重新进入常用服务器。
-3. **中文拼音输入法**：终端内置拼音输入，支持触摸软键盘和实体键盘输入中文。
-4. **实体键盘增强**：检测到实体键盘后自动隐藏软键盘，支持方向键、Tab、Esc、Ctrl 组合键等常用终端操作。
-5. **TF 卡文件管理器**：可以在设备上浏览、打开、复制、移动、重命名、删除 TF 卡文件；实体键盘也可以参与文件管理器操作。
-6. **在线文件管理器**：连接 WiFi 后，可在设置中开启在线 TF 卡文件管理器，通过浏览器访问设备文件。
-7. **OTA 固件升级**：设置页可检测主程序和 UPLOAD 固件更新，下载到 TF 卡后按提示完成升级。
-8. **网络与电源状态**：主界面显示 WiFi、IPv4/IPv6、电量、USB-C 供电和充电状态，方便随时确认设备状态。
+## 1. First Boot
 
-## 1. 主界面
+1. Flash the full firmware from `flash-at-0x0/` to address `0x0`.
+2. Insert a TF card if you want to use the file manager, screenshots, music playback, OTA package storage, or configuration backup.
+3. Power on the device.
+4. Select **English** on the language screen.
+5. The device enters the SSH server list.
 
-启动后进入“SSH 服务器”列表。
+You can change the language later from **Settings > System > Language**. After changing language, the device shows a switching prompt, turns off the display, and reboots.
 
-主界面常用入口：
+## 2. Home Screen
 
-1. **服务器卡片**：短按连接；长按打开“编辑 / 删除 / 取消”菜单。
-2. **添加**：右上角“+ 添加”，新增 SSH 服务器。
-3. **WiFi 状态**：右上角 WiFi 芯片，进入 WiFi 管理。
-4. **电源状态**：顶部电量/USB-C 区域，查看电源信息和充电速度。
-5. **IPv4 / IPv6**：底部显示当前网络地址状态。
-6. **设置**：底部设置入口，用于应用设置。
+The home screen is the SSH server list.
 
-添加服务器时需要填写：图标、名称、主机/IP、端口、用户名、密码，以及可选的“连接后自动运行命令”。
+Common entries:
 
-## 2. WiFi 管理
-
-进入 WiFi 管理后可以：
-
-1. 查看当前连接状态、IPv4/IPv6 地址。
-2. 手动输入 SSID 和密码，点击“保存并连接”。
-3. 在“WiFi 列表”中选择扫描到的网络。
-4. 对已保存网络执行“连接”或“删除”。
-
-开放网络可以不填密码。扫描列表里，“直连”表示开放网络可直接连接，“使用”表示先填入 SSID，再输入密码连接。
-
-## 3. 进入终端
-
-短按服务器卡片后进入 SSH 终端。终端画面默认尽量全屏，只在需要时显示控制区。
-
-触摸热区：
-
-1. **顶部边缘**：显示状态栏，状态栏右侧“X”可断开连接并返回服务器列表。
-2. **左侧边缘**：显示/隐藏控制栏。
-3. **右侧边缘**：显示/隐藏软键盘和控制栏。
-
-控制栏包含：输入法切换、ESC、TAB、CTRL、ALT、HOME、END、PgUp、PgDn、方向键、Enter。
-
-## 4. 终端输入法和键盘操作
-
-终端默认支持中文拼音输入。拼音模式下，先输入拼音，选择候选字后才会把汉字发送到 SSH 终端；英文模式下，字母会直接发送到终端。
-
-### 4.1 输入模式
-
-1. **拼音模式**：输入 `zhong` 这类拼音后，屏幕会显示拼音输入栏和候选字栏。
-2. **英文模式**：输入字母、数字、符号会直接发送到远端 shell。
-3. **切换方式**：
-   - 软键盘/触摸：打开左侧或右侧控制栏，点“拼 / EN”按钮。
-   - 实体键盘：按 `Ctrl + 空格`。
-
-切换时屏幕会短暂显示“拼”或“EN”的提示图标。
-
-### 4.2 软键盘输入
-
-没有检测到实体键盘时，点击右侧热区可以弹出软键盘。
-
-软键盘常用操作：
-
-| 操作 | 说明 |
+| Area | Action |
 |---|---|
-| 输入拼音字母 | 在拼音模式下组成拼音，并显示候选字 |
-| 点候选字 | 直接把该汉字发送到终端 |
-| 空格 | 选择第 1 个候选字 |
-| 方向键左/上 | 候选字上一页 |
-| 方向键右/下 | 候选字下一页 |
-| 回退 | 有拼音时删除一个拼音字母；无拼音时发送退格 |
-| Enter/确认 | 有拼音未选字时，发送当前拼音字母；无拼音时发送回车 |
-| 关闭键盘 | 隐藏软键盘，并清除未完成的拼音输入 |
+| Server card | Tap to connect |
+| Server card menu | Long-press to edit or delete |
+| Add button | Add a new SSH server |
+| WiFi status | Open WiFi manager |
+| Battery/USB-C area | Open power details |
+| IPv4 / IPv6 area | View network address information |
+| Settings | Open system settings |
 
-如果要输入英文命令，建议先切到 **EN**，例如输入 `ls -la`、`cd /tmp` 这类命令会更直接。
+When adding a server, fill in the icon, name, host/IP, port, username, password, and optional command to run after connection.
 
-### 4.3 实体键盘输入
+## 3. WiFi Manager
 
-检测到 Tab5 实体键盘后，终端会自动隐藏软键盘，直接使用实体键盘输入。
+Open WiFi manager from the WiFi status area.
 
-实体键盘常用操作：
+You can:
 
-| 按键 | 拼音模式 | 英文模式/普通终端 |
+1. View connection status, IPv4, and IPv6 information.
+2. Enter SSID and password manually, then tap **Save & Connect**.
+3. Select a network from the scanned WiFi list.
+4. Connect to or delete saved networks.
+
+For open networks, the password field can be left blank.
+
+## 4. SSH Terminal
+
+Tap a server card to enter the terminal. The terminal is designed to stay mostly full-screen and shows controls only when needed.
+
+Touch hot zones:
+
+| Area | Action |
+|---|---|
+| Top edge | Show the status bar |
+| Left edge | Show or hide the control bar |
+| Right edge | Show or hide the soft keyboard and control bar |
+| Status bar close button | Disconnect SSH and return to the server list |
+
+The control bar includes common terminal keys such as ESC, TAB, CTRL, ALT, HOME, END, PgUp, PgDn, arrow keys, and Enter.
+
+## 5. Physical Keyboard
+
+When a compatible Tab5 physical keyboard is detected, the soft keyboard can stay hidden and input goes directly through the physical keyboard.
+
+Common keys:
+
+| Key | Action |
+|---|---|
+| Letters, numbers, symbols | Send directly to the remote terminal |
+| Enter | Send Enter |
+| Tab | Send Tab |
+| Esc | Send ESC |
+| Backspace | Send Backspace/Delete |
+| Arrow keys | Send terminal arrow keys |
+| Ctrl + key | Send terminal control combinations, such as Ctrl+C |
+| Alt + key | Send ESC-prefixed key sequences |
+
+## 6. TF Card File Manager
+
+Open the file manager from Settings or the status shortcut when the TF card is mounted.
+
+Main operations:
+
+1. Browse folders and files on the TF card.
+2. Use **Select All**, **Copy**, **Cut**, **Paste**, and **Delete** from the toolbar.
+3. Delete actions show a confirmation dialog before removing files.
+4. Open supported images, text files, and music files.
+5. Use the online file manager over WiFi for browser-based upload/download.
+
+Screenshots are saved to `/ScreenShots` on the TF card.
+
+## 7. Music Player
+
+The file manager can open MP3 and FLAC files.
+
+Supported behavior:
+
+1. Play music from the current folder or favorites.
+2. Add/remove favorites from the music list.
+3. Continue playback in the background with the top music bar.
+4. Display embedded cover artwork when available.
+
+Audio decoding and image viewing are resource-sensitive. If an operation feels slow, stop playback before doing heavy file or image work.
+
+## 8. OTA Upgrade
+
+Open **Settings > Firmware Upgrade**.
+
+You can:
+
+1. Check for main firmware updates.
+2. Check for UPLOAD firmware updates.
+3. Download firmware packages to the TF card.
+4. Install after the version and package checks pass.
+
+Keep power stable during upgrade. Do not remove the TF card or power off the device while installing firmware.
+
+## 9. Backup and Restore
+
+Open **Settings > Configuration Backup**.
+
+Backup options:
+
+| Type | Use case |
+|---|---|
+| Encrypted backup | Recommended for portable backups and cross-device migration |
+| Plain backup | Useful for local recovery when you understand the privacy risk |
+
+SSH and WiFi credentials are sensitive. Keep backup files private.
+
+## 10. Time, Language, and Screenshot Settings
+
+Open **Settings > System**.
+
+Useful settings:
+
+1. **Language**: English, 简体中文, or 繁體中文.
+2. **Timezone**: affects local time display, screenshot names, and NTP-adjusted local time.
+3. **Top music bar**: adjust the width and left position of the background music bar.
+4. **Three-finger screenshot**: enable or disable screenshot gesture.
+
+## 11. Quick Reference
+
+| Goal | Touch | Physical keyboard |
 |---|---|---|
-| 字母 | 组成拼音 | 直接发送字母 |
-| 数字 `1-9` | 选择对应候选字 | 直接发送数字 |
-| 数字 `0` | 选择第 10 个候选字 | 直接发送数字 0 |
-| 空格 | 选择第 1 个候选字 | 发送空格 |
-| 方向键左/上 | 候选字上一页 | 发送方向键 |
-| 方向键右/下 | 候选字下一页 | 发送方向键 |
-| Backspace | 删除一个拼音字母 | 发送 `DEL (0x7F)` |
-| Enter | 发送当前拼音字母 | 发送回车 |
-| Esc | 清除当前拼音输入 | 发送 ESC |
-| Tab | 发送 Tab | 发送 Tab |
-| Ctrl + 空格 | 切换“拼音 / 英文” | 切换“拼音 / 英文” |
-| Ctrl + 字母 | 发送控制字符，如 `Ctrl+C` | 发送控制字符 |
-| Alt + 字符 | 发送 `ESC + 字符` 序列 | 发送 `ESC + 字符` 序列 |
-
-注意：拼音模式下，如果已经输入了拼音，数字和空格会优先用于选字；想直接输入数字或空格，可以先选完字，或切到 **EN**。
-
-### 4.4 拼音输入示例
-
-输入中文“中”：
-
-1. 确认当前是 **拼音模式**。
-2. 输入 `zhong`。
-3. 候选栏出现候选字。
-4. 用触摸点候选字，或用实体键盘按对应数字；也可以按空格选择第 1 个候选字。
-5. 选中的汉字会立即发送到 SSH 终端。
-
-想放弃当前拼音：
-
-1. 软键盘：按关闭键，或回退删完拼音。
-2. 实体键盘：按 `Esc` 清除当前拼音输入。
-
-## 5. 快捷速查
-
-| 目标 | 触摸/软键盘 | 实体键盘 |
-|---|---|---|
-| 显示状态栏 | 点顶部边缘 | - |
-| 显示控制栏 | 点左侧边缘 | - |
-| 显示/隐藏软键盘 | 点右侧边缘 | 检测到实体键盘后自动隐藏 |
-| 断开 SSH | 状态栏右侧“X” | - |
-| 切换拼音/英文 | 控制栏“拼 / EN” | `Ctrl + 空格` |
-| 发送 `Ctrl+C` | 控制栏 `CTRL` 后按 `C` | `Ctrl + C` |
-| 发送 ESC | 控制栏 `ESC` | `Esc` |
-| 发送 Tab | 控制栏 `TAB` | `Tab` |
-| 候选字翻页 | 控制栏方向键 | 方向键 |
-| 选第 1 个候选字 | 空格或点候选字 | 空格 |
-| 选第 N 个候选字 | 点候选字 | 数字键 |
+| Show status bar | Tap top edge | - |
+| Show control bar | Tap left edge | - |
+| Show soft keyboard | Tap right edge | Usually hidden when detected |
+| Disconnect SSH | Tap close button on status bar | - |
+| Send Ctrl+C | Tap CTRL then C | Ctrl + C |
+| Send ESC | Tap ESC | Esc |
+| Send Tab | Tap TAB | Tab |
+| Move cursor/history | Tap arrow keys | Arrow keys |

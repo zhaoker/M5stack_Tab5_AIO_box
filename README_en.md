@@ -1,0 +1,125 @@
+# M5Stack Tab5 AIO Box
+
+**English** | [简体中文](README_zh-CN.md) | [繁體中文](README_zh-TW.md)
+
+> A portable SSH terminal, file manager, media viewer, and OTA maintenance tool for the ESP32-P4 + M5Stack Tab5 hardware platform.
+
+## Quick Start
+
+Start here if you only want to use the device:
+
+**[English Quick Start Guide](QUICK_START_GUIDE.md)**  
+[简体中文快速使用手册](QUICK_START_GUIDE_zh-CN.md) | [繁體中文快速使用手冊](QUICK_START_GUIDE_zh-TW.md)
+
+Different language versions have their own guide. The English guide focuses on general SSH, WiFi, file management, OTA, and maintenance workflows.
+
+---
+
+## System Language
+
+On first boot, the device asks you to choose a system language. You can change it later from **Settings > System**.
+
+Currently supported:
+
+- English
+- 简体中文
+- 繁體中文
+
+![Language Selection](images/tab5.jpg)
+
+---
+
+## Product Preview
+
+![Device Photo](images/cn_tab5_5.jpg)
+
+The device can be used with the Tab5 touchscreen, an optional physical keyboard, TF card storage, WiFi networking, and the built-in SSH terminal UI.
+
+---
+
+## Key Features
+
+### SSH Terminal Client
+
+- Save multiple SSH servers and connect by tapping a server card
+- Edit or delete saved servers from the card action menu
+- IPv4/IPv6 network status display
+- Full-screen terminal with touch hot zones for the status bar, control bar, and soft keyboard
+- Optional physical keyboard support for common terminal keys
+
+![SSH Terminal](images/cn_tab5_2.jpg)
+
+### TF Card File Manager
+
+- Browse, copy, cut, paste, rename, and delete files on the TF card
+- Batch actions, including select all, copy, cut, and delete
+- Image viewing, text file viewing, EXIF metadata display, and MP3/FLAC music playback
+- Online file manager over WiFi for browser-based file access
+
+![File Manager](images/cn_tab5_3.jpg)
+
+### Music Player
+
+- Play MP3/FLAC files from the TF card
+- Background playback bar
+- Favorites list
+- Album cover display when embedded artwork is available
+
+![Music Player](images/cn_tab5_2.jpg)
+
+### OTA Firmware Upgrade
+
+- Check main firmware and UPLOAD firmware updates from Settings
+- Download firmware packages to the TF card
+- Verify version and package data before installation
+
+![OTA Upgrade](images/cn_tab5_6.jpg)
+
+### System Tools
+
+- WiFi manager with saved network list
+- Battery, USB-C, and charging status display
+- Three-finger screenshot saved to `/ScreenShots` on the TF card
+- Encrypted and plain configuration backup options
+- Language, timezone, top music bar, and display settings
+
+![Settings](images/cn_tab5_1.jpg)
+
+---
+
+## Hardware Platform
+
+- **Chip**: ESP32-P4
+- **Device**: M5Stack Tab5
+- **Storage**: 16 MB Flash + 32 MB PSRAM
+- **Interfaces**: TF card, USB-C, optional physical keyboard
+- **Display**: 720 x 1280 MIPI DSI touchscreen
+
+---
+
+## Repository Layout
+
+```text
+├── flash-at-0x0/          # Full firmware image, flash from address 0x0
+├── images/                # Product screenshots
+├── exif-test-images/      # Sample images with EXIF metadata
+├── QUICK_START_GUIDE.md       # English quick start guide
+├── QUICK_START_GUIDE_zh-CN.md # Simplified Chinese quick start guide
+├── QUICK_START_GUIDE_zh-TW.md # Traditional Chinese quick start guide
+├── README.md                  # Default English project page
+├── README_en.md               # English project page mirror
+├── README_zh-CN.md            # Simplified Chinese project page
+└── README_zh-TW.md            # Traditional Chinese project page
+```
+
+---
+
+## Privacy Notice
+
+SSH server credentials are stored with AES-256-GCM encryption. Configuration backups can be exported as encrypted backups or plain backups depending on the migration scenario.
+
+Except for necessary OTA requests, the firmware does not send private SSH, WiFi, or file data to external services.
+
+## License
+
+This project uses the libssh library under LGPL v2.1.

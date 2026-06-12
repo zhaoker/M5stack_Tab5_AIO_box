@@ -1,96 +1,125 @@
 # M5Stack Tab5 AIO Box
 
-> 基于 ESP32-P4 + M5Stack Tab5 硬件平台的便携式 SSH 终端设备，集成中文拼音输入法、文件管理、OTA 升级等完整功能。
+**English** | [简体中文](README_zh-CN.md) | [繁體中文](README_zh-TW.md)
+
+> A portable SSH terminal, file manager, media viewer, and OTA maintenance tool for the ESP32-P4 + M5Stack Tab5 hardware platform.
+
+## Quick Start
+
+Start here if you only want to use the device:
+
+**[English Quick Start Guide](QUICK_START_GUIDE.md)**  
+[简体中文快速使用手册](QUICK_START_GUIDE_zh-CN.md) | [繁體中文快速使用手冊](QUICK_START_GUIDE_zh-TW.md)
+
+Different language versions have their own guide. The English guide focuses on general SSH, WiFi, file management, OTA, and maintenance workflows.
 
 ---
 
-## 产品预览
+## System Language
 
-![实物照片](images/tab5%20(5).jpg)
-> 左：Tab5 触摸屏软键盘 | 右：Tab5 实体键盘搭配
+On first boot, the device asks you to choose a system language. You can change it later from **Settings > System**.
 
----
+Currently supported:
 
-## 核心亮点
+- English
+- 简体中文
+- 繁體中文
 
-### SSH 终端客户端
-- 支持多服务器保存，短按卡片快速连接，长按编辑/删除
-- 双栈 IPv4/IPv6 支持，自动保存会话配置，断开后可恢复连接
-- 全屏终端显示，触摸热区呼出状态栏、控制栏和软键盘
-
-![SSH 终端](images/tab5%20(2).jpg)
-> 终端内置拼音输入法，支持中文输入
-
-### 内置中文拼音输入法
-- **拼音模式**：输入拼音后显示候选字，触摸或数字键快速选字
-- **英文模式**：直接发送字符到远端终端
-- `Ctrl + 空格` 快速切换输入模式
-- 实体键盘自动适配，检测到键盘后隐藏软键盘
-
-![终端连接](images/tab5%20(4).jpg)
-> 终端中文拼音输入实际效果
-
-### TF 卡文件管理器
-- 本地浏览、复制、移动、重命名、删除文件
-- 支持 BMP、GIF 图像和多种编码文本文件查看
-- 实体键盘可操作文件管理
-
-![文件管理器](images/tab5%20(3).jpg)
-> 支持本地浏览和在线管理
-
-### OTA 固件升级
-![固件升级](images/tab5%20(6).jpg)
-> 固件升级：检测、下载、版本校验
-
-- 设置页检测主程序和 UPLOAD 固件更新
-- 下载到 TF 卡后按提示完成升级
-- 完整的版本校验和安全机制
-
-![系统设置](images/tab5%20(1).jpg)
-> 系统设置：背光调节、三指滑动截屏、OTA 升级等
+![Language Selection](images/tab5.jpg)
 
 ---
 
-## 特色功能
+## Product Preview
 
-| 功能 | 说明 |
-|------|------|
-| **三指滑动截屏** | 三指滑动即可截屏，自动保存到 TF 卡 |
-| **在线文件管理** | WiFi 环境下通过浏览器远程访问设备文件 |
-| **网络与电源监控** | 主界面实时显示 WiFi 状态、IP 地址、电量、充电状态 |
-| **OTA 双固件升级** | 主程序 + UPLOAD 固件独立升级机制 |
-| **自动连接 WiFi** | 开机自动扫描并匹配已保存的 WiFi 网络 |
-| **自动充电** | 开机自动延时启动充电，支持快充模式 |
+![Device Photo](images/cn_tab5_5.jpg)
+
+The device can be used with the Tab5 touchscreen, an optional physical keyboard, TF card storage, WiFi networking, and the built-in SSH terminal UI.
 
 ---
 
-## 硬件平台
+## Key Features
 
-- **芯片**：ESP32-P4
-- **硬件**：M5Stack Tab5
-- **存储**：16 MB Flash + 32 MB PSRAM
-- **接口**：TF 卡、USB-C、实体键盘（外接）
-- **屏幕**：720×1280 MIPI DSI
+### SSH Terminal Client
+
+- Save multiple SSH servers and connect by tapping a server card
+- Edit or delete saved servers from the card action menu
+- IPv4/IPv6 network status display
+- Full-screen terminal with touch hot zones for the status bar, control bar, and soft keyboard
+- Optional physical keyboard support for common terminal keys
+
+![SSH Terminal](images/cn_tab5_2.jpg)
+
+### TF Card File Manager
+
+- Browse, copy, cut, paste, rename, and delete files on the TF card
+- Batch actions, including select all, copy, cut, and delete
+- Image viewing, text file viewing, EXIF metadata display, and MP3/FLAC music playback
+- Online file manager over WiFi for browser-based file access
+
+![File Manager](images/cn_tab5_3.jpg)
+
+### Music Player
+
+- Play MP3/FLAC files from the TF card
+- Background playback bar
+- Favorites list
+- Album cover display when embedded artwork is available
+
+![Music Player](images/cn_tab5_2.jpg)
+
+### OTA Firmware Upgrade
+
+- Check main firmware and UPLOAD firmware updates from Settings
+- Download firmware packages to the TF card
+- Verify version and package data before installation
+
+![OTA Upgrade](images/cn_tab5_6.jpg)
+
+### System Tools
+
+- WiFi manager with saved network list
+- Battery, USB-C, and charging status display
+- Three-finger screenshot saved to `/ScreenShots` on the TF card
+- Encrypted and plain configuration backup options
+- Language, timezone, top music bar, and display settings
+
+![Settings](images/cn_tab5_1.jpg)
 
 ---
 
-## 目录结构
+## Hardware Platform
 
+- **Chip**: ESP32-P4
+- **Device**: M5Stack Tab5
+- **Storage**: 16 MB Flash + 32 MB PSRAM
+- **Interfaces**: TF card, USB-C, optional physical keyboard
+- **Display**: 720 x 1280 MIPI DSI touchscreen
+
+---
+
+## Repository Layout
+
+```text
+├── flash-at-0x0/          # Full firmware image, flash from address 0x0
+├── images/                # Product screenshots
+├── exif-test-images/      # Sample images with EXIF metadata
+├── QUICK_START_GUIDE.md       # English quick start guide
+├── QUICK_START_GUIDE_zh-CN.md # Simplified Chinese quick start guide
+├── QUICK_START_GUIDE_zh-TW.md # Traditional Chinese quick start guide
+├── README.md                  # Default English project page
+├── README_en.md               # English project page mirror
+├── README_zh-CN.md            # Simplified Chinese project page
+└── README_zh-TW.md            # Traditional Chinese project page
 ```
-├── 固件0x0刷入/
-│   └── tab5_full_flash.bin    # 完整固件镜像，刷入 0x0 地址
-├── images/                     # 产品截图
-└── README.md
-```
 
 ---
-## 郑重说明
 
-SSH服务器密钥使用AES-256-GCM 加密存储，备份导出等配置均可设置密码，防止信息失窃。
+## Privacy Notice
 
-本项目除了OTA需要发送必要请求信息外，绝不向外界发送任何涉及数据相关的隐私信息。
+SSH server credentials are stored with AES-256-GCM encryption. Configuration backups can be exported as encrypted backups or plain backups depending on the migration scenario.
 
+Except for necessary OTA requests, the firmware does not send private SSH, WiFi, or file data to external services.
 
-## 许可证
+## License
 
-本项目使用了 libssh 库（LGPL v2.1）。
+This project uses the libssh library under LGPL v2.1.
