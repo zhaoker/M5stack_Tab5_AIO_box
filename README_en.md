@@ -56,8 +56,8 @@ The device can be used with the Tab5 touchscreen, an optional physical keyboard,
 - Image viewing, text file viewing, EXIF metadata display, and MP3/FLAC music playback
 - Online file manager over WiFi for browser-based file access
 
-![File Manager](images/cn_tab5_3.jpg)
-
+![File Manager](images/en_tab5_3.jpg)
+![picture view](images/tab5_1.jpg)
 ### Music Player
 
 - Play MP3/FLAC files from the TF card
