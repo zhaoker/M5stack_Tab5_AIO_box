@@ -29,9 +29,14 @@ Currently supported:
 
 ---
 
+## Notes
+
+1. Enabling WiFi to upload files via the online file manager consumes significant power (nearly 11W). After flashing firmware via USB, please use a power adapter capable of delivering 5V 2A.
+2. Due to a known architectural flaw in the ESP32-P4 + C6 design (SDIO flow control defect for inbound TCP data / upload direction), uploading multiple large files via the online file manager is highly unstable. We are waiting for a new solution from the community.
+
 ## Product Preview
 
-![Device Photo](images/cn_tab5_5.jpg)
+![Device Photo](images/tab5_1.jpg)
 
 The device can be used with the Tab5 touchscreen, an optional physical keyboard, TF card storage, WiFi networking, and the built-in SSH terminal UI.
 
@@ -47,7 +52,7 @@ The device can be used with the Tab5 touchscreen, an optional physical keyboard,
 - Full-screen terminal with touch hot zones for the status bar, control bar, and soft keyboard
 - Optional physical keyboard support for common terminal keys
 
-![SSH Terminal](images/cn_tab5_2.jpg)
+![SSH Terminal](images/en_tab5_2.jpg)
 
 ### TF Card File Manager
 
@@ -57,7 +62,7 @@ The device can be used with the Tab5 touchscreen, an optional physical keyboard,
 - Online file manager over WiFi for browser-based file access
 
 ![File Manager](images/en_tab5_3.jpg)
-![picture view](images/tab5_1.jpg)
+![Picture View](images/en_tab5_7.jpg)
 ### Music Player
 
 - Play MP3/FLAC files from the TF card
@@ -65,7 +70,7 @@ The device can be used with the Tab5 touchscreen, an optional physical keyboard,
 - Favorites list
 - Album cover display when embedded artwork is available
 
-![Music Player](images/cn_tab5_2.jpg)
+![Music Player](images/en_tab5_8.jpg)
 
 ### OTA Firmware Upgrade
 
@@ -73,7 +78,7 @@ The device can be used with the Tab5 touchscreen, an optional physical keyboard,
 - Download firmware packages to the TF card
 - Verify version and package data before installation
 
-![OTA Upgrade](images/cn_tab5_6.jpg)
+![OTA Upgrade](images/en_tab5_6.jpg)
 
 ### System Tools
 
@@ -83,7 +88,7 @@ The device can be used with the Tab5 touchscreen, an optional physical keyboard,
 - Encrypted and plain configuration backup options
 - Language, timezone, top music bar, and display settings
 
-![Settings](images/cn_tab5_1.jpg)
+![Settings](images/en_tab5_1.jpg)
 
 ---
 
