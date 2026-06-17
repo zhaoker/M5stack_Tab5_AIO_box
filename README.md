@@ -87,10 +87,12 @@ The device can be used with the Tab5 touchscreen, an optional physical keyboard,
 - Battery, USB-C, and charging status display
 - Three-finger screenshot saved to `/ScreenShots` on the TF card
 - Encrypted and plain configuration backup options
-- Language, timezone, top music bar, and display settings
+- Supports configurable standby screensaver; long-press to move widgets while active.
+
 
 ![Settings](images/en_tab5_1.jpg)
-
+![Screensaver](images/tab5_2.jpg)
+---
 ---
 
 ## Hardware Platform
