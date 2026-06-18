@@ -107,9 +107,10 @@ The device can be used with the Tab5 touchscreen, an optional physical keyboard,
 ## Repository Layout
 
 ```text
-├── flash-at-0x0/          # Full firmware image, flash from address 0x0
-├── images/                # Product screenshots
-├── exif-test-images/      # Sample images with EXIF metadata
+├── flash_at_0x0/              # Full merged firmware image, flash from address 0x0
+├── Partition_images/          # Individual partition images and flashing guide
+├── images/                    # Product photos and screenshots
+├── test_images_with_EXIF/     # Sample images with EXIF metadata
 ├── QUICK_START_GUIDE.md       # English quick start guide
 ├── QUICK_START_GUIDE_zh-CN.md # Simplified Chinese quick start guide
 ├── QUICK_START_GUIDE_zh-TW.md # Traditional Chinese quick start guide

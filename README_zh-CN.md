@@ -115,9 +115,10 @@
 ## 目录结构
 
 ```text
-├── flash-at-0x0/              # 完整固件，使用 esptool 从 0x0 地址刷入
-├── images/                    # 产品截图
-├── exif-test-images/          # 含 EXIF 信息的测试图片
+├── flash_at_0x0/              # 合并后的完整固件，使用 esptool 从 0x0 地址刷入
+├── Partition_images/          # 单独分区镜像和分区刷机说明
+├── images/                    # 产品照片和截图
+├── test_images_with_EXIF/     # 含 EXIF 信息的测试图片
 ├── QUICK_START_GUIDE.md       # 英文快速使用手册
 ├── QUICK_START_GUIDE_zh-CN.md # 简体中文快速使用手册
 ├── QUICK_START_GUIDE_zh-TW.md # 繁體中文快速使用手冊
