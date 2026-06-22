@@ -2,20 +2,34 @@
 
 This folder contains individual firmware images for each flash region used by the ESP32-P4 M5Stack Tab5 SSH client firmware.
 
+The current release uses a Launcher-compatible partition layout:
+
+- `main_app` is the first app partition at `0x20000`, so [bmorcelli/Launcher](https://github.com/bmorcelli/Launcher) can select the SSH client app when it extracts a full flash image.
+- `factory` at `0xF80000` stores the small factory updater / UPLOAD firmware used by the native OTA flow.
+- When the app is booted by Launcher, the firmware page can still check versions, but direct in-app OTA installation is unavailable. Update the firmware through Launcher in that mode.
+
 ## English
 
 Run the commands below from this `Partition_images` folder. Replace `COMx` with your serial port, for example `COM3` on Windows.
 
+### Flash The Full Merged Image
+
+If you downloaded `flash_at_0x0/tab5_full_flash.bin`, flash it from address `0x0`:
+
+```powershell
+python -m esptool --chip esp32p4 -p COMx --baud 1500000 --before default_reset --after hard_reset write_flash --flash_mode dio --flash_size 16MB --flash_freq 80m 0x0 ..\flash_at_0x0\tab5_full_flash.bin
+```
+
 ### Flash All Partition Images
 
 ```powershell
-python -m esptool --chip esp32p4 --baud 1500000 --before default_reset --after hard_reset write_flash --flash_mode dio --flash_size 16MB --flash_freq 80m 0x2000 bootloader.bin 0x8000 partition_table.bin 0xF000 ota_data_initial.bin 0x20000 tab5_factory_updater.bin 0xA0000 M5stack_tab5_ssh_client.bin
+python -m esptool --chip esp32p4 --baud 1500000 --before default_reset --after hard_reset write_flash --flash_mode dio --flash_size 16MB --flash_freq 80m 0x2000 bootloader.bin 0x8000 partition_table.bin 0xF000 ota_data_initial.bin 0x20000 M5stack_tab5_ssh_client.bin 0xF80000 tab5_factory_updater.bin
 ```
 
 With an explicit serial port:
 
 ```powershell
-python -m esptool --chip esp32p4 -p COMx --baud 1500000 --before default_reset --after hard_reset write_flash --flash_mode dio --flash_size 16MB --flash_freq 80m 0x2000 bootloader.bin 0x8000 partition_table.bin 0xF000 ota_data_initial.bin 0x20000 tab5_factory_updater.bin 0xA0000 M5stack_tab5_ssh_client.bin
+python -m esptool --chip esp32p4 -p COMx --baud 1500000 --before default_reset --after hard_reset write_flash --flash_mode dio --flash_size 16MB --flash_freq 80m 0x2000 bootloader.bin 0x8000 partition_table.bin 0xF000 ota_data_initial.bin 0x20000 M5stack_tab5_ssh_client.bin 0xF80000 tab5_factory_updater.bin
 ```
 
 ### Flash Only The Main Application
@@ -23,10 +37,10 @@ python -m esptool --chip esp32p4 -p COMx --baud 1500000 --before default_reset -
 Use this when the bootloader, partition table, OTA data, and factory updater are already correct on the device, and you only want to update the main firmware:
 
 ```powershell
-python -m esptool --chip esp32p4 -p COMx --baud 1500000 --before default_reset --after hard_reset write_flash --flash_mode dio --flash_size 16MB --flash_freq 80m 0xA0000 M5stack_tab5_ssh_client.bin
+python -m esptool --chip esp32p4 -p COMx --baud 1500000 --before default_reset --after hard_reset write_flash --flash_mode dio --flash_size 16MB --flash_freq 80m 0x20000 M5stack_tab5_ssh_client.bin
 ```
 
-Do not flash `M5stack_tab5_ssh_client.bin` to `0x0`. It belongs at the `main_app` partition offset `0xA0000`.
+Do not flash `M5stack_tab5_ssh_client.bin` to `0x0`. It belongs at the `main_app` partition offset `0x20000`.
 
 ### Image Map
 
@@ -35,23 +49,37 @@ Do not flash `M5stack_tab5_ssh_client.bin` to `0x0`. It belongs at the `main_app
 | `0x2000` | `bootloader.bin` | ESP-IDF bootloader |
 | `0x8000` | `partition_table.bin` | Flash partition table |
 | `0xF000` | `ota_data_initial.bin` | OTA boot selection data |
-| `0x20000` | `tab5_factory_updater.bin` | Factory updater / UPLOAD firmware |
-| `0xA0000` | `M5stack_tab5_ssh_client.bin` | Main application firmware |
+| `0x20000` | `M5stack_tab5_ssh_client.bin` | Main application firmware |
+| `0xF80000` | `tab5_factory_updater.bin` | Factory updater / UPLOAD firmware |
 
 ## 中文
 
+当前发布使用兼容 Launcher 的分区布局：
+
+- `main_app` 是第一个 app 分区，地址为 `0x20000`，因此 [bmorcelli/Launcher](https://github.com/bmorcelli/Launcher) 从整包固件提取 app 时会选中 SSH 客户端主程序。
+- `factory` 位于 `0xF80000`，保存小型 factory updater / UPLOAD 固件，用于原生 OTA 流程。
+- 如果当前 app 由 Launcher 引导启动，固件升级页仍可检测版本，但无法在 app 内直接安装 OTA；这种模式下请通过 Launcher 更新固件。
+
 下面的命令请在当前 `Partition_images` 目录中执行。请把 `COMx` 替换为实际串口号，例如 Windows 上的 `COM3`。
+
+### 刷入整包固件
+
+如果下载的是 `flash_at_0x0/tab5_full_flash.bin`，请从 `0x0` 地址刷入：
+
+```powershell
+python -m esptool --chip esp32p4 -p COMx --baud 1500000 --before default_reset --after hard_reset write_flash --flash_mode dio --flash_size 16MB --flash_freq 80m 0x0 ..\flash_at_0x0\tab5_full_flash.bin
+```
 
 ### 刷入全部分区镜像
 
 ```powershell
-python -m esptool --chip esp32p4 --baud 1500000 --before default_reset --after hard_reset write_flash --flash_mode dio --flash_size 16MB --flash_freq 80m 0x2000 bootloader.bin 0x8000 partition_table.bin 0xF000 ota_data_initial.bin 0x20000 tab5_factory_updater.bin 0xA0000 M5stack_tab5_ssh_client.bin
+python -m esptool --chip esp32p4 --baud 1500000 --before default_reset --after hard_reset write_flash --flash_mode dio --flash_size 16MB --flash_freq 80m 0x2000 bootloader.bin 0x8000 partition_table.bin 0xF000 ota_data_initial.bin 0x20000 M5stack_tab5_ssh_client.bin 0xF80000 tab5_factory_updater.bin
 ```
 
 指定串口的命令：
 
 ```powershell
-python -m esptool --chip esp32p4 -p COMx --baud 1500000 --before default_reset --after hard_reset write_flash --flash_mode dio --flash_size 16MB --flash_freq 80m 0x2000 bootloader.bin 0x8000 partition_table.bin 0xF000 ota_data_initial.bin 0x20000 tab5_factory_updater.bin 0xA0000 M5stack_tab5_ssh_client.bin
+python -m esptool --chip esp32p4 -p COMx --baud 1500000 --before default_reset --after hard_reset write_flash --flash_mode dio --flash_size 16MB --flash_freq 80m 0x2000 bootloader.bin 0x8000 partition_table.bin 0xF000 ota_data_initial.bin 0x20000 M5stack_tab5_ssh_client.bin 0xF80000 tab5_factory_updater.bin
 ```
 
 ### 只刷主程序
@@ -59,10 +87,10 @@ python -m esptool --chip esp32p4 -p COMx --baud 1500000 --before default_reset -
 当设备上的 bootloader、分区表、OTA 数据、factory updater 都已经正确，只想更新主程序时，使用下面的命令：
 
 ```powershell
-python -m esptool --chip esp32p4 -p COMx --baud 1500000 --before default_reset --after hard_reset write_flash --flash_mode dio --flash_size 16MB --flash_freq 80m 0xA0000 M5stack_tab5_ssh_client.bin
+python -m esptool --chip esp32p4 -p COMx --baud 1500000 --before default_reset --after hard_reset write_flash --flash_mode dio --flash_size 16MB --flash_freq 80m 0x20000 M5stack_tab5_ssh_client.bin
 ```
 
-不要把 `M5stack_tab5_ssh_client.bin` 刷到 `0x0`。它属于 `main_app` 分区，偏移地址是 `0xA0000`。
+不要把 `M5stack_tab5_ssh_client.bin` 刷到 `0x0`。它属于 `main_app` 分区，偏移地址是 `0x20000`。
 
 ### 镜像对应关系
 
@@ -71,8 +99,8 @@ python -m esptool --chip esp32p4 -p COMx --baud 1500000 --before default_reset -
 | `0x2000` | `bootloader.bin` | ESP-IDF 启动加载器 |
 | `0x8000` | `partition_table.bin` | Flash 分区表 |
 | `0xF000` | `ota_data_initial.bin` | OTA 启动选择数据 |
-| `0x20000` | `tab5_factory_updater.bin` | Factory updater / UPLOAD 固件 |
-| `0xA0000` | `M5stack_tab5_ssh_client.bin` | 主程序固件 |
+| `0x20000` | `M5stack_tab5_ssh_client.bin` | 主程序固件 |
+| `0xF80000` | `tab5_factory_updater.bin` | Factory updater / UPLOAD 固件 |
 
 ## Partition Table / 分区表
 
@@ -81,17 +109,19 @@ python -m esptool --chip esp32p4 -p COMx --baud 1500000 --before default_reset -
 | `nvs` | `data` | `nvs` | `0x9000` | `0x6000` | Non-volatile settings storage / 非易失设置存储 |
 | `otadata` | `data` | `ota` | `0xF000` | `0x2000` | OTA boot metadata / OTA 启动元数据 |
 | `phy_init` | `data` | `phy` | `0x11000` | `0x1000` | PHY calibration/init data / PHY 初始化数据 |
-| `factory` | `app` | `factory` | `0x20000` | `0x80000` | Factory updater application / Factory updater 应用 |
-| `main_app` | `app` | `ota_0` | `0xA0000` | `0xF60000` | Main SSH client application / SSH 客户端主程序 |
+| `main_app` | `app` | `ota_0` | `0x20000` | `0xF60000` | Main SSH client application / SSH 客户端主程序 |
+| `factory` | `app` | `factory` | `0xF80000` | `0x80000` | Factory updater application / Factory updater 应用 |
 
 Notes:
 
 - `nvs` and `phy_init` are data partitions. They are not included as standalone `.bin` files in this folder.
 - `otadata` is included so a full partition-image flash can set the boot selection state correctly.
 - The main application partition is named `main_app`, but its subtype is `ota_0`; keep this layout unchanged for ESP-IDF OTA boot support.
+- `main_app` is intentionally the first app partition in this table so Launcher-style full-flash extraction selects the SSH client firmware, not the factory updater.
 
 说明：
 
 - `nvs` 和 `phy_init` 是数据分区，本目录没有提供独立 `.bin` 文件。
 - `otadata` 已包含在本目录中，完整刷入分区镜像时会写入正确的启动选择状态。
 - 主程序分区名称是 `main_app`，但 subtype 是 `ota_0`；请保持这个布局不变，以便 ESP-IDF OTA 启动机制正常工作。
+- `main_app` 特意放在 app 分区列表的第一项，这样 Launcher 这类整包提取机制会选中 SSH 主程序，而不是 factory updater。

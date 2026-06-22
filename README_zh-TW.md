@@ -89,6 +89,13 @@
 
 ![韌體升級](images/cn_tab5_6.jpg)
 
+### 刷機與 Launcher 支援
+
+- `flash_at_0x0/tab5_full_flash.bin` 是合併後的完整韌體，請從 `0x0` 位址刷入。
+- `Partition_images/` 提供單獨分區鏡像和詳細的 esptool 刷機命令。
+- 目前分區布局相容 [bmorcelli/Launcher](https://github.com/bmorcelli/Launcher)：`main_app` 是第一個 app 分區，位址為 `0x20000`，Launcher 這類整包提取機制會選中 SSH 客戶端主程式。
+- 如果目前 app 由 Launcher 引導啟動，韌體升級頁仍可偵測更新資訊，但不會顯示「立即更新」按鈕，也不能在 app 內直接安裝 OTA；這種模式下請透過 Launcher 更新。
+
 ### 系統工具
 
 - WiFi 管理和已保存網路列表

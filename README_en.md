@@ -80,6 +80,13 @@ The device can be used with the Tab5 touchscreen, an optional physical keyboard,
 
 ![OTA Upgrade](images/en_tab5_6.jpg)
 
+### Flashing And Launcher Support
+
+- `flash_at_0x0/tab5_full_flash.bin` is the full merged image and should be flashed from address `0x0`.
+- `Partition_images/` contains the individual partition images and detailed esptool commands.
+- The current partition layout is compatible with [bmorcelli/Launcher](https://github.com/bmorcelli/Launcher): `main_app` is the first app partition at `0x20000`, so Launcher-style full-flash extraction selects the SSH client app.
+- When booted by Launcher, the firmware page can check update information, but direct in-app OTA installation is disabled. Please update through Launcher in that mode.
+
 ### System Tools
 
 - WiFi manager with saved network list

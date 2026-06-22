@@ -89,6 +89,13 @@
 
 ![固件升级](images/cn_tab5_6.jpg)
 
+### 刷机与 Launcher 支持
+
+- `flash_at_0x0/tab5_full_flash.bin` 是合并后的完整固件，请从 `0x0` 地址刷入。
+- `Partition_images/` 提供单独分区镜像和详细的 esptool 刷机命令。
+- 当前分区布局兼容 [bmorcelli/Launcher](https://github.com/bmorcelli/Launcher)：`main_app` 是第一个 app 分区，地址为 `0x20000`，Launcher 这类整包提取机制会选中 SSH 客户端主程序。
+- 如果当前 app 由 Launcher 引导启动，固件升级页仍可检测更新信息，但不会显示“立即更新”按钮，也不能在 app 内直接安装 OTA；这种模式下请通过 Launcher 更新。
+
 ### 系统工具
 
 - WiFi 管理和已保存网络列表
