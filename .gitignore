@@ -1,0 +1,26 @@
+# ESP-IDF build output
+/build/
+/build_*/
+/Update_project/build/
+/Update_project/build_updater/
+/remote_flash_files/
+
+# ESP-IDF generated dependencies and local configuration
+managed_components/
+/Update_project/managed_components/
+/Update_project/sdkconfig
+/Update_project/sdkconfig.old
+/Update_project/dependencies.lock
+sdkconfig.old
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Editors and local tooling
+.vscode/
+.claude/
+.clangd
+.idea/
+.DS_Store
+Thumbs.db

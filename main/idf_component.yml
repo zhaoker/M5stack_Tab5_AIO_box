@@ -1,0 +1,10 @@
+dependencies:
+  idf: '>=5.4'
+  lvgl:
+    path: ../components/lvgl
+  espressif/esp_lvgl_port: "==2.5.0"
+  espressif/esp_hosted: "==1.4.0"
+  espressif/esp_wifi_remote: "==0.8.5"
+  espressif/eppp_link: "==1.1.4"
+  usb_host_msc: "^1.1.1"
+  espressif/esp_tinyusb: "^2.0.0"

@@ -1,0 +1,37 @@
+M5Stack Tab5 AIO Box
+Copyright 2026 Zhaoker
+
+This project's own source code and documentation are licensed under the
+Apache License, Version 2.0. See LICENSE for the full license text.
+
+Third-party components included in this repository or linked into the
+firmware remain under their respective licenses. See
+THIRD_PARTY_LICENSES.md for the complete list and further details.
+Key components:
+
+  LVGL 9.2.2                        MIT
+  esp_lvgl_port                     Apache-2.0
+  M5Stack Tab5 BSP                  Apache-2.0
+  esp_lcd_st7121                    Apache-2.0
+  libssh / libssh_esp32             LGPL-2.1; some files BSD-2-Clause
+  FatFs                             FatFs license (BSD-style)
+
+libssh is distributed under LGPL-2.1. The complete corresponding source
+is included in this repository, so the firmware can be rebuilt or
+relinked with a modified or alternative version of libssh.
+
+The embedded font glyph arrays under main/fonts/ were generated from
+MiSans, JetBrains Mono, Font Awesome 5 Free, and CodexMono-Hermes. The
+original font files are not redistributed. See THIRD_PARTY_LICENSES.md
+for the applicable terms.
+
+The M5Stack hardware reference PDFs in doc/ and the third-party sample
+photographs in release/test_images_with_EXIF/ remain subject to their
+own terms and are not relicensed by this project. The prebuilt firmware
+images in release/ include third-party components and remain subject to
+the licenses listed above and in THIRD_PARTY_LICENSES.md.
+
+M5Stack, Tab5, and other product names are trademarks of their
+respective owners. Use of these names does not imply endorsement.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.

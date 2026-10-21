@@ -1,0 +1,2 @@
+version: "1.0.0"
+description: ST7121 LCD panel driver for ESP-IDF

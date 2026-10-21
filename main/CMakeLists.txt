@@ -1,0 +1,110 @@
+file(GLOB app_font_sources "fonts/*.c")
+
+set(app_adf_requires)
+if(DEFINED ENV{ADF_PATH} AND EXISTS "$ENV{ADF_PATH}/components/audio_pipeline/CMakeLists.txt")
+    list(APPEND app_adf_requires audio_pipeline esp-adf-libs)
+endif()
+
+idf_component_register(
+    SRCS
+        "main.c"
+        ${app_font_sources}
+        "diagnostics/mem_diag.c"
+        "power/power_monitor.c"
+        "security/password_crypto.c"
+        "storage/nvs_config_backup.c"
+        "storage/server_config.c"
+        "storage/tf_card.c"
+        "storage/tf_usb_disk_mode.c"
+        "storage/usb_storage.c"
+        "i18n/app_i18n.c"
+        "settings/app_settings.c"
+        "ota_update/ota_update_service.c"
+        "screenshot/screenshot_service.c"
+        "screensaver/screensaver_service.c"
+        "time_sync/rtc_rx8130.c"
+        "time_sync/time_sync_service.c"
+        "audio/audio_adf_sink.c"
+        "audio/audio_cover.c"
+        "audio/audio_codec_sink.c"
+        "audio/audio_duration_cache.c"
+        "audio/audio_favorites.c"
+        "audio/audio_library.c"
+        "audio/audio_player_service.c"
+        "file_manager/file_manager_exif.c"
+        "file_manager/file_manager_media.c"
+        "file_manager/file_manager_text.c"
+        "file_manager/file_manager_utils.c"
+        "file_manager/ui_file_manager.c"
+        "file_manager/web_file_manager.c"
+        "hw/tab5_keyboard.c"
+        "wifi_manager.c"
+        "ssh/ssh_client.c"
+        "terminal/ansi_parser.c"
+        "terminal/term_renderer.c"
+        "terminal/term_special_chars.c"
+        "ui/ui_language_select.c"
+        "ui/ui_audio_background.c"
+        "ui/ui_hw_pinyin_input.c"
+        "ui/ui_number_input.c"
+        "ui/ui_pinyin_ime_ext.c"
+        "ui/pinyin/pinyin_dict_custom.c"
+        "ui/pinyin/pinyin_phrase_dict.c"
+        "ui/ui_server_list.c"
+        "ui/ui_settings.c"
+        "ui/ui_terminal.c"
+        "ui/ui_wifi.c"
+    INCLUDE_DIRS
+        "."
+        "audio"
+        "diagnostics"
+        "fonts"
+        "file_manager"
+        "hw"
+        "i18n"
+        "ota_update"
+        "power"
+        "security"
+        "ssh"
+        "settings"
+        "screenshot"
+        "screensaver"
+        "storage"
+        "time_sync"
+        "terminal"
+        "ui"
+    REQUIRES
+        driver
+        efuse
+        esp_hw_support
+        esp_security
+        esp_driver_sdmmc
+        esp_driver_i2c
+        m5stack_tab5
+        lvgl
+        esp_lvgl_port
+        heap
+        spi_flash
+        nvs_flash
+        app_update
+        esp_wifi
+        esp_event
+        esp_netif
+        esp_http_client
+        json
+        mbedtls
+        esp_http_server
+        esp_driver_jpeg
+        esp_driver_ppa
+        esp_psram
+        esp_timer
+        fatfs
+        sdmmc
+        usb
+        usb_host_msc
+        esp_tinyusb
+        libssh_esp32
+        ${app_adf_requires}
+)
+
+target_compile_options(${COMPONENT_LIB} PRIVATE -include app_config.h -Wno-bidi-chars)

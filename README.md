@@ -1,141 +1,111 @@
 # M5Stack Tab5 AIO Box
 
-**English** | [简体中文](README_zh-CN.md) | [繁體中文](README_zh-TW.md)
+**ESP32-P4 SSH terminal, file manager, media player, and OTA maintenance firmware for the M5Stack Tab5.**
 
-> A portable SSH terminal, file manager, media viewer, and OTA maintenance tool for the ESP32-P4 + M5Stack Tab5 hardware platform.
+**English** | [简体中文](README_zh-CN.md)
 
-## Quick Start
+[Product overview and quick start](release/README.md) | [简体中文发布页](release/README_zh-CN.md) | [繁體中文發佈頁](release/README_zh-TW.md)
 
-Start here if you only want to use the device:
+This repository hosts the full firmware source. The previously published release bundle — product pages, screenshots, quick-start guides, and prebuilt firmware — is preserved unchanged in [`release/`](release/).
 
-**[English Quick Start Guide](QUICK_START_GUIDE.md)**  
-[简体中文快速使用手册](QUICK_START_GUIDE_zh-CN.md) | [繁體中文快速使用手冊](QUICK_START_GUIDE_zh-TW.md)
+## Features
 
-Different language versions have their own guide. The English guide focuses on general SSH, WiFi, file management, OTA, and maintenance workflows.
+- **SSH terminal** — multiple saved servers, password authentication, PTY shell, ANSI/VT100 parsing, UTF-8 and wide-character rendering on an LVGL canvas.
+- **Wi-Fi management** — scan, connect, saved credentials, auto-connect, IPv4/IPv6 status. The ESP32-P4 uses the onboard ESP32-C6 through SDIO (`esp_hosted` + `esp_wifi_remote`).
+- **TF card file manager** — browse, copy, cut, paste, rename, delete, batch actions, text and image viewers with EXIF metadata, MP3/FLAC playback.
+- **Web file manager** — browser-based file access over Wi-Fi.
+- **OTA maintenance** — main firmware and factory updater update checks, download to the TF card, version and package verification.
+- **System tools** — battery/charging status, three-finger screenshot, encrypted or plain configuration backup, configurable standby screensaver, runtime language selection (English, 简体中文, 繁體中文).
 
----
+## Architecture: Two Firmware Images, On Purpose
 
-## System Language
+This project intentionally ships **two separately built ESP-IDF applications** instead of one monolithic image:
 
-On first boot, the device asks you to choose a system language. You can change it later from **Settings > System**.
+```text
+factory (512 KB)          main_app (15.38 MB, subtype ota_0)
+┌──────────────────┐      ┌────────────────────────────────────┐
+│ tab5_factory_    │      │ Full application: LVGL, SSH,       │
+│ updater          │ ---> │ file manager, Wi-Fi, OTA client    │
+│ TF-card installs │      │                                    │
+│ and boot choice  │      │                                    │
+└──────────────────┘      └────────────────────────────────────┘
+```
 
-Currently supported:
+- `main_app` holds the full user-facing firmware and receives almost the entire 16 MB flash, leaving room for future features, fonts, protocols, and larger UI resources.
+- `factory` holds a minimal updater with no LVGL and no Wi-Fi. It validates a TF-card image, writes `main_app`, and selects the next boot partition.
+- The installer is independent of the application it installs: a corrupted `main_app` image can be replaced without a debugger while the factory updater remains intact.
+- `main_app` keeps subtype `ota_0` while using the label `main_app`, so the standard ESP-IDF OTA API and `otadata` boot selection still work. It is also the first app partition at `0x20000`, which keeps Launcher-style tools working.
+- The main application can update the factory updater itself: it downloads the small image, verifies size and SHA-256, and writes it to the `factory` partition after confirmation.
 
-- English
-- 简体中文
-- 繁體中文
-
-![Language Selection](images/tab5.jpg)
-
----
-
-## Notes
-
-1. Enabling WiFi to upload files via the online file manager consumes significant power (nearly 11W). After flashing firmware via USB, please use a power adapter capable of delivering 5V 2A.
-2. Due to a known architectural flaw in the ESP32-P4 + C6 design (SDIO flow control defect for inbound TCP data / upload direction), uploading multiple large files via the online file manager is highly unstable. We are waiting for a new solution from the community.
-
-## Product Preview
-
-![Device Photo](images/tab5_1.jpg)
-
-The device can be used with the Tab5 touchscreen, an optional physical keyboard, TF card storage, WiFi networking, and the built-in SSH terminal UI.
-
----
-
-## Key Features
-
-### SSH Terminal Client
-
-- Save multiple SSH servers and connect by tapping a server card
-- Edit or delete saved servers from the card action menu
-- IPv4/IPv6 network status display
-- Full-screen terminal with touch hot zones for the status bar, control bar, and soft keyboard
-- Optional physical keyboard support for common terminal keys
-
-![SSH Terminal](images/en_tab5_2.jpg)
-
-### TF Card File Manager
-
-- Browse, copy, cut, paste, rename, and delete files on the TF card
-- Batch actions, including select all, copy, cut, and delete
-- Image viewing, text file viewing, EXIF metadata display, and MP3/FLAC music playback
-- Online file manager over WiFi for browser-based file access
-
-![File Manager](images/en_tab5_3.jpg)
-![Picture View](images/en_tab5_7.jpg)
-
-### Music Player
-
-- Play MP3/FLAC files from the TF card
-- Background playback bar
-- Favorites list
-- Album cover display when embedded artwork is available
-
-![Music Player](images/en_tab5_8.jpg)
-
-### OTA Firmware Upgrade
-
-- Check main firmware and UPLOAD firmware updates from Settings
-- Download firmware packages to the TF card
-- Verify version and package data before installation
-
-![OTA Upgrade](images/en_tab5_6.jpg)
-
-### Flashing And Launcher Support
-
-- `flash_at_0x0/tab5_full_flash.bin` is the full merged image and should be flashed from address `0x0`.
-- `Partition_images/` contains the individual partition images and detailed esptool commands.
-- The current partition layout is compatible with [bmorcelli/Launcher](https://github.com/bmorcelli/Launcher): `main_app` is the first app partition at `0x20000`, so Launcher-style full-flash extraction selects the SSH client app.
-- When booted by Launcher, the firmware page can check update information, but direct in-app OTA installation is disabled. Please update through Launcher in that mode.
-
-### System Tools
-
-- WiFi manager with saved network list
-- Battery, USB-C, and charging status display
-- Three-finger screenshot saved to `/ScreenShots` on the TF card
-- Encrypted and plain configuration backup options
-- Supports configurable standby screensaver; long-press to move widgets while active.
+This split was a deliberate design choice to keep OTA reliable while allowing the firmware to keep growing. The updater's protocol, safety checks, build, and flashing steps are documented in [`Update_project/README.md`](Update_project/README.md).
 
 
-![Settings](images/en_tab5_1.jpg)
-![Screensaver](images/tab5_2.jpg)
----
----
+## Hardware
 
-## Hardware Platform
-
-- **Chip**: ESP32-P4
-- **Device**: M5Stack Tab5
-- **Storage**: 16 MB Flash + 32 MB PSRAM
-- **Interfaces**: TF card, USB-C, optional physical keyboard
-- **Display**: 720 x 1280 MIPI DSI touchscreen
-
----
+| Item | Detail |
+| --- | --- |
+| Board | M5Stack Tab5 |
+| SoC | ESP32-P4 |
+| Wireless | ESP32-C6 over SDIO |
+| Flash / PSRAM | 16 MB / 32 MB |
+| Display | 720 x 1280 MIPI DSI touchscreen |
+| Storage | TF card, USB-C |
+| Input | Touchscreen, optional physical keyboard |
 
 ## Repository Layout
 
 ```text
-├── flash_at_0x0/              # Full merged firmware image, flash from address 0x0
-├── Partition_images/          # Individual partition images and flashing guide
-├── images/                    # Product photos and screenshots
-├── test_images_with_EXIF/     # Sample images with EXIF metadata
-├── QUICK_START_GUIDE.md       # English quick start guide
-├── QUICK_START_GUIDE_zh-CN.md # Simplified Chinese quick start guide
-├── QUICK_START_GUIDE_zh-TW.md # Traditional Chinese quick start guide
-├── README.md                  # Default English project page
-├── README_en.md               # English project page mirror
-├── README_zh-CN.md            # Simplified Chinese project page
-└── README_zh-TW.md            # Traditional Chinese project page
+main/                  Main firmware: UI, SSH, terminal, file manager, audio, OTA
+components/            Vendored components: LVGL 9.2.2, esp_lvgl_port, Tab5 BSP,
+                       libssh_esp32, FatFs
+Update_project/        Small factory-partition updater; see Update_project/README.md
+                       for its design rationale and update protocol
+doc/                   M5Stack Tab5 hardware reference PDFs
+release/               Original release bundle: product READMEs, images,
+                       quick-start guides, prebuilt firmware
+BUILDING.md            Toolchain, build, partition and flashing instructions
+DEVELOPMENT.md         Detailed architecture and development manual (Chinese)
+THIRD_PARTY_LICENSES.md
 ```
 
----
+`managed_components/` is generated by the ESP-IDF component manager on the first build and is intentionally not committed.
 
-## Privacy Notice
+## Build
 
-SSH server credentials are stored with AES-256-GCM encryption. Configuration backups can be exported as encrypted backups or plain backups depending on the migration scenario.
+The project targets **ESP-IDF v5.5.4** and `esp32p4`.
 
-Except for necessary OTA requests, the firmware does not send private SSH, WiFi, or file data to external services.
+```sh
+. "$IDF_PATH/export.sh"     # Windows: %IDF_PATH%\export.bat or export.ps1
+idf.py build
+```
+
+See [BUILDING.md](BUILDING.md) for the full toolchain setup, optional ESP-ADF audio support, partition layout, updater build, and flashing workflow.
+
+## Prebuilt Firmware
+
+The last published images are in the release bundle:
+
+- `release/flash_at_0x0/tab5_full_flash.bin` — merged image, flash from address `0x0`.
+- `release/Partition_images/` — individual partition images and esptool commands.
+- `release/Partition_images/README.md` — flashing details.
+
+The prebuilt images are a release snapshot and may not match the current source tree. Rebuild from source for the latest changes.
+
+## Documentation
+
+- [BUILDING.md](BUILDING.md) — build, flash, updater, and partition reference.
+- [Update_project/README.md](Update_project/README.md) — factory updater design, TF update protocol, and standalone build.
+- [DEVELOPMENT.md](DEVELOPMENT.md) — architecture, module boundaries, key flows, and maintenance notes (Chinese).
+- [release/QUICK_START_GUIDE.md](release/QUICK_START_GUIDE.md) — English quick-start guide.
+- [release/QUICK_START_GUIDE_zh-CN.md](release/QUICK_START_GUIDE_zh-CN.md) — 简体中文快速使用手册.
+- [release/QUICK_START_GUIDE_zh-TW.md](release/QUICK_START_GUIDE_zh-TW.md) — 繁體中文快速使用手冊.
+
+## Privacy
+
+SSH credentials are stored with AES-256-GCM encryption. Configuration backups can be exported as encrypted or plain archives. Except for the OTA manifest and firmware download requests, the firmware does not send SSH, Wi-Fi, or file data to external services.
 
 ## License
 
-This project uses the libssh library under LGPL v2.1.
+The project's own source code and documentation are licensed under the [Apache License 2.0](LICENSE). Attribution notices are in [NOTICE](NOTICE); see [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md) for bundled components and their licenses.
+
+Bundled third-party components remain under their own licenses. In particular, libssh is licensed under LGPL-2.1; the complete corresponding source is included so the firmware can be rebuilt or relinked with a modified libssh.
